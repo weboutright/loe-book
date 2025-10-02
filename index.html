@@ -436,15 +436,22 @@
         @media (max-width: 1024px) {
             .booking-container {
                 grid-template-columns: 1fr;
+                height: auto;
+                min-height: 100vh;
+                overflow: visible;
             }
             
             .sidebar {
                 min-height: auto;
                 padding: 32px 24px;
+                height: auto;
+                overflow: visible;
             }
             
             .main-content {
                 padding: 32px 24px;
+                height: auto;
+                overflow: visible;
             }
             
             .date-time-selector {
@@ -456,14 +463,21 @@
         @media (max-width: 768px) {
             .booking-container {
                 grid-template-columns: 1fr;
+                height: auto;
+                min-height: 100vh;
+                overflow: visible;
             }
             
             .sidebar {
                 padding: 24px 20px;
+                height: auto;
+                overflow: visible;
             }
             
             .main-content {
                 padding: 24px 20px;
+                height: auto;
+                overflow: visible;
             }
             
             .content-title {
@@ -507,12 +521,22 @@
         }
 
         @media (max-width: 480px) {
+            .booking-container {
+                height: auto;
+                min-height: 100vh;
+                overflow: visible;
+            }
+            
             .sidebar {
                 padding: 20px 16px;
+                height: auto;
+                overflow: visible;
             }
             
             .main-content {
                 padding: 20px 16px;
+                height: auto;
+                overflow: visible;
             }
             
             .booking-form {
