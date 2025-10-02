@@ -330,6 +330,45 @@
             box-shadow: 0 6px 20px rgba(8, 73, 39, 0.3);
         }
 
+        /* Mobile Time Selector */
+        .time-selector-mobile {
+            display: none;
+        }
+
+        .time-select-dropdown {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 48px;
+        }
+
+        .time-select-dropdown:hover {
+            border-color: #084927;
+            background-color: #f8fafc;
+        }
+
+        .time-select-dropdown:focus {
+            outline: none;
+            border-color: #084927;
+            box-shadow: 0 0 0 3px rgba(8, 73, 39, 0.1);
+        }
+
+        .time-select-dropdown option {
+            padding: 8px;
+            color: #374151;
+        }
+
         /* Form Section */
         .booking-form {
             margin-top: 16px;
@@ -458,6 +497,22 @@
                 grid-template-columns: 1fr;
                 gap: 24px;
             }
+
+            .calendar-section, .time-section {
+                height: auto;
+                min-height: auto;
+            }
+
+            .calendar-grid {
+                min-height: auto;
+                height: auto;
+            }
+
+            .time-slots {
+                max-height: none;
+                height: auto;
+                overflow: visible;
+            }
         }
 
         @media (max-width: 768px) {
@@ -504,9 +559,14 @@
                 font-size: 14px;
             }
             
-            .time-slot {
-                padding: 12px 16px;
-                font-size: 14px;
+            /* Hide individual time slots on mobile */
+            .time-slots {
+                display: none;
+            }
+            
+            /* Show time selector dropdown on mobile */
+            .time-selector-mobile {
+                display: block !important;
             }
             
             .form-input {
@@ -673,6 +733,7 @@
                     <h3>Wednesday, Oct 2</h3>
                     <p class="selected-date">Available times for your session</p>
 
+                    <!-- Desktop Time Slots -->
                     <div class="time-slots">
                         <div class="time-slot selected">7:30 AM</div>
                         <div class="time-slot">8:30 AM</div>
@@ -689,6 +750,27 @@
                         <div class="time-slot">3:00 PM</div>
                         <div class="time-slot">3:30 PM</div>
                         <div class="time-slot">4:00 PM</div>
+                    </div>
+
+                    <!-- Mobile Time Selector -->
+                    <div class="time-selector-mobile">
+                        <select id="time-select-mobile" class="time-select-dropdown">
+                            <option value="7:30 AM" selected>7:30 AM</option>
+                            <option value="8:30 AM">8:30 AM</option>
+                            <option value="9:00 AM">9:00 AM</option>
+                            <option value="9:30 AM">9:30 AM</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="10:30 AM">10:30 AM</option>
+                            <option value="11:00 AM">11:00 AM</option>
+                            <option value="11:30 AM">11:30 AM</option>
+                            <option value="1:00 PM">1:00 PM</option>
+                            <option value="1:30 PM">1:30 PM</option>
+                            <option value="2:00 PM">2:00 PM</option>
+                            <option value="2:30 PM">2:30 PM</option>
+                            <option value="3:00 PM">3:00 PM</option>
+                            <option value="3:30 PM">3:30 PM</option>
+                            <option value="4:00 PM">4:00 PM</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -996,8 +1078,32 @@
                     
                     // Update hidden time input
                     document.getElementById('booking-time').value = this.textContent;
+                    
+                    // Update mobile selector to match
+                    const mobileSelect = document.getElementById('time-select-mobile');
+                    if (mobileSelect) {
+                        mobileSelect.value = this.textContent;
+                    }
                 });
             });
+
+            // Mobile time selector
+            const mobileTimeSelect = document.getElementById('time-select-mobile');
+            if (mobileTimeSelect) {
+                mobileTimeSelect.addEventListener('change', function() {
+                    const selectedTime = this.value;
+                    
+                    // Update hidden time input
+                    document.getElementById('booking-time').value = selectedTime;
+                    
+                    // Update desktop time slots to match
+                    timeSlots.forEach(s => s.classList.remove('selected'));
+                    const matchingSlot = Array.from(timeSlots).find(slot => slot.textContent === selectedTime);
+                    if (matchingSlot) {
+                        matchingSlot.classList.add('selected');
+                    }
+                });
+            }
         });
 
         // Initialize the Square Card Element when the page loads
